@@ -41,6 +41,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         y+=1
     # print("y intermediate is",y)
     while y < top[1]:
+        
         draw_line(int(x0),y,z0,int(x2),y,z2,screen,zbuffer,color)
         x0 += dx0
         x2 += dx2
@@ -359,8 +360,10 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             return
     else:
         dz = (z1 - z0) / (x1 - x0) if m < 1 and m > -1 else (z1 - z0) / (y1 -y0)
+        # dz = (z1 - z0) / ( loop_end - loop_start )
     while ( loop_start < loop_end ):
-        if zbuffer[x][y] < z:
+        
+        if abs(x) < len(zbuffer) and abs(y) < len(zbuffer[0]) and zbuffer[x][y] < z:
             plot( screen, zbuffer, color, x, y, 0 )
             zbuffer[x][y] = z
         z += dz
@@ -375,5 +378,5 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             y+= dy_east
             d+= d_east
         loop_start+= 1
-    if zbuffer[x][y] < z:
+    if abs(x) < len(zbuffer) and abs(y) < len(zbuffer[0]) and zbuffer[x][y] < z:
         plot( screen, zbuffer, color, x, y, 0 )
